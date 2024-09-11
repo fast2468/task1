@@ -1,0 +1,101 @@
+import random
+
+def choose_word():
+    words = ['python', 'java', 'kotlin', 'javascript', 'hangman', 'programming', 'computer']
+    return random.choice(words)
+
+def display_hangman(tries):
+    stages = [
+        """
+           -----
+           |   |
+           O   |
+          /|\\  |
+          / \\  |
+              ===
+        """,
+        """
+           -----
+           |   |
+           O   |
+          /|\\  |
+          /    |
+              ===
+        """,
+        """
+           -----
+           |   |
+           O   |
+          /|\\  |
+               |
+              ===
+        """,
+        """
+           -----
+           |   |
+           O   |
+          /|   |
+               |
+              ===
+        """,
+        """
+           -----
+           |   |
+           O   |
+           |   |
+               |
+              ===
+        """,
+        """
+           -----
+           |   |
+           O   |
+               |
+               |
+              ===
+        """,
+        """
+           -----
+           |   |
+               |
+               |
+               |
+              ===
+        """
+    ]
+    return stages[tries]
+
+def play_hangman():
+    word = choose_word()
+    word_letters = set(word)
+    guessed_letters = set()
+    tries = 6
+
+    print("Let's play Hangman!")
+    print(display_hangman(tries))
+    print('_ ' * len(word))
+
+    while len(word_letters) > 0 and tries > 0:
+        guess = input("Guess a letter: ").lower()
+
+        if guess in guessed_letters:
+            print("You already guessed that letter.")
+        elif guess in word_letters:
+            word_letters.remove(guess)
+            guessed_letters.add(guess)
+        else:
+            guessed_letters.add(guess)
+            tries -= 1
+            print(f"Wrong guess! You have {tries} tries left.")
+
+        word_display = [letter if letter in guessed_letters else '_' for letter in word]
+        print(display_hangman(tries))
+        print(' '.join(word_display))
+
+    if tries == 0:
+        print(f"Sorry, you lost! The word was '{word}'.")
+    else:
+        print(f"Congratulations! You guessed the word '{word}'!")
+
+# Start the game
+play_hangman()
